@@ -31,11 +31,11 @@ SemaphoreHandle_t xSemaphore_btn_y;
 
 void btn_callback(uint gpio, uint32_t events){
   if(gpio == BTN_PIN_R){
-        SemaphoreGiveFromISR(xSemaphore_btn_r,0);
+        xSemaphoreGiveFromISR(xSemaphore_btn_r,0);
   } else if(gpio == BTN_PIN_Y){
         xSemaphoreGiveFromISR(xSemaphore_btn_y,0);
   }
-  
+
 }
 
 void btn_1_task(void *p){
