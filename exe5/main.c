@@ -117,6 +117,13 @@ void led_2_task(void *p){
 int main() {
     stdio_init_all();
 
+    gpio_init(LED_PIN_R);
+    gpio_set_dir(LED_PIN_R, GPIO_OUT);
+    gpio_put(LED_PIN_R, 0);
+    gpio_init(LED_PIN_Y);
+    gpio_set_dir(LED_PIN_Y, GPIO_OUT);
+    gpio_put(LED_PIN_Y, 0);
+
     xSemaphore_btn_r = xSemaphoreCreateBinary();
     xSemaphore_btn_y = xSemaphoreCreateBinary();
 
