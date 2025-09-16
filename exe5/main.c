@@ -35,6 +35,7 @@ void btn_callback(uint gpio, uint32_t events){
   } else if(gpio == BTN_PIN_Y){
         xSemaphoreGiveFromISR(xSemaphore_btn_y,0);
   }
+  
 }
 
 void btn_1_task(void *p){
