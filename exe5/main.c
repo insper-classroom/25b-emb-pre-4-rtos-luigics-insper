@@ -108,10 +108,6 @@ int main() {
     gpio_pull_up(BTN_PIN_Y);
 
     xQueueBtn = xQueueCreate(10, sizeof(uint32_t));
-    
-    xSemaphore_btn_r = xSemaphoreCreateBinary();
-    xSemaphore_btn_y = xSemaphoreCreateBinary();
-
     xSemaphoreLedR = xSemaphoreCreateBinary();
     xSemaphoreLedY = xSemaphoreCreateBinary();
 
