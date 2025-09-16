@@ -20,9 +20,9 @@ SemaphoreHandle_t xSemaphore_btn_g;
 
 void btn_callback(uint gpio, uint32_t events){
   if(gpio == BTN_PIN_R){
-      xSemaphoreGiveFromISR(xSemaphore_btn_r,0);
+    xSemaphoreGiveFromISR(xSemaphore_btn_r,0);
   } else if(gpio == BTN_PIN_G){
-      xSemaphoreGiveFromISR(xSemaphore_btn_g,0);
+    xSemaphoreGiveFromISR(xSemaphore_btn_g,0);
   }
 }
 
@@ -33,11 +33,8 @@ void btn_1_task(void *p){
 
   while (true){
     if(xSemaphoreTake(xSemaphore_btn_r, pdMS_TO_TICKS(100)) == pdTRUE){
-      vTaskDelay(pdMS_TO_TICKS(100)); 
-
-      if(!gpio_get(BTN_PIN_R)){
-        xSemaphoreGive(xSemaphore_led_r);
-      }
+      xSemaphoreGive(xSemaphore_led_r);
+      vTaskDelay(pdMS_TO_TICKS(200));
     }
   }
 
@@ -50,43 +47,43 @@ void btn_2_task(void *p){
     
   while (true){
     if(xSemaphoreTake(xSemaphore_btn_g, pdMS_TO_TICKS(100)) == pdTRUE){
+      xSemaphoreGive(xSemaphore_led_g);
       vTaskDelay(pdMS_TO_TICKS(100));
-      if(!gpio_get(BTN_PIN_G)){
-        xSemaphoreGive(xSemaphore_led_g);
-      }
     }
   }
 
 }
 
 void led_1_task(void *p){
-    gpio_init(LED_PIN_R);
-    gpio_set_dir(LED_PIN_R, GPIO_OUT);
-    int delay = 250;
+  gpio_init(LED_PIN_R);
+  gpio_set_dir(LED_PIN_R, GPIO_OUT);
+  int delay = 250;
 
-    while (true){
-      if(xSemaphoreTake(xSemaphore_led_r, pdMS_TO_TICKS(100)) == pdTRUE){
-          gpio_put(LED_PIN_R, 1);
-          vTaskDelay(pdMS_TO_TICKS(delay));
-          gpio_put(LED_PIN_R, 0);
-          vTaskDelay(pdMS_TO_TICKS(delay));
-      }
+  while (true){
+    if(xSemaphoreTake(xSemaphore_led_r, pdMS_TO_TICKS(100)) == pdTRUE){
+        gpio_put(LED_PIN_R, 1);
+        vTaskDelay(pdMS_TO_TICKS(delay));
+        gpio_put(LED_PIN_R, 0);
+        vTaskDelay(pdMS_TO_TICKS(delay));
     }
+  }
+  
 }
 
 void led_2_task(void *p){
-    gpio_init(LED_PIN_G);
-    gpio_set_dir(LED_PIN_G, GPIO_OUT);
-    int delay = 250;
+  gpio_init(LED_PIN_G);
+  gpio_set_dir(LED_PIN_G, GPIO_OUT);
+  int delay = 250;
 
-    while (true){
-      if(xSemaphoreTake(xSemaphore_led_g, pdMS_TO_TICKS(100)) == pdTRUE){
-        gpio_put(LED_PIN_G, 1);
-        vTaskDelay(pdMS_TO_TICKS(delay));
-        gpio_put(LED_PIN_G, 0);
-        vTaskDelay(pdMS_TO_TICKS(delay));
-      }
+  while (true){
+    if(xSemaphoreTake(xSemaphore_led_g, pdMS_TO_TICKS(100)) == pdTRUE){
+      gpio_put(LED_PIN_G, 1);
+      vTaskDelay(pdMS_TO_TICKS(delay));
+      gpio_put(LED_PIN_G, 0);
+      vTaskDelay(pdMS_TO_TICKS(delay));
     }
+  }
+
 }
 
 int main(){
