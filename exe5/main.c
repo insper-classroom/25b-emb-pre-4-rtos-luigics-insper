@@ -39,10 +39,7 @@ void btn_callback(uint gpio, uint32_t events){
 }
 
 void btn_1_task(void *p){
-  gpio_init(BTN_PIN_R);
-  gpio_set_dir(BTN_PIN_R, GPIO_IN);
-  gpio_pull_up(BTN_PIN_R);
-
+  
   while (true){
     if(xSemaphoreTake(xSemaphore_btn_r, pdMS_TO_TICKS(100)) == pdTRUE){
       xSemaphoreGive(xSemaphore_led_r);
@@ -53,9 +50,6 @@ void btn_1_task(void *p){
 }
 
 void btn_2_task(void *p){
-  gpio_init(BTN_PIN_Y);
-  gpio_set_dir(BTN_PIN_Y, GPIO_IN);
-  gpio_pull_up(BTN_PIN_Y);
     
   while (true){
     if(xSemaphoreTake(xSemaphore_btn_y, pdMS_TO_TICKS(100)) == pdTRUE){
@@ -67,8 +61,6 @@ void btn_2_task(void *p){
 }
 
 void led_1_task(void *p){
-    gpio_init(LED_PIN_R);
-    gpio_set_dir(LED_PIN_R, GPIO_OUT);
     int delay = 250;
     bool ta_piscando_v = false;
 
@@ -91,8 +83,6 @@ void led_1_task(void *p){
 }
 
 void led_2_task(void *p){
-    gpio_init(LED_PIN_Y);
-    gpio_set_dir(LED_PIN_Y, GPIO_OUT);
     int delay = 250;
     bool ta_piscando_a = false;
 
@@ -119,10 +109,17 @@ int main() {
 
     gpio_init(LED_PIN_R);
     gpio_set_dir(LED_PIN_R, GPIO_OUT);
-    gpio_put(LED_PIN_R, 0);
+    gpio_put(LED_PIN_R, 0); 
     gpio_init(LED_PIN_Y);
     gpio_set_dir(LED_PIN_Y, GPIO_OUT);
-    gpio_put(LED_PIN_Y, 0);
+    gpio_put(LED_PIN_Y, 0); 
+
+    gpio_init(BTN_PIN_R);
+    gpio_set_dir(BTN_PIN_R, GPIO_IN);
+    gpio_pull_up(BTN_PIN_R);
+    gpio_init(BTN_PIN_Y);
+    gpio_set_dir(BTN_PIN_Y, GPIO_IN);
+    gpio_pull_up(BTN_PIN_Y);
 
     xSemaphore_btn_r = xSemaphoreCreateBinary();
     xSemaphore_btn_y = xSemaphoreCreateBinary();
